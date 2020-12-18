@@ -4,7 +4,8 @@ import grails.gorm.transactions.Transactional
 import grails.web.servlet.mvc.GrailsParameterMap
 
 class MemberService {
-    List<Member> memberList
+
+
 
     def save(GrailsParameterMap params){
         Member member = new Member(params)
@@ -36,7 +37,7 @@ class MemberService {
 
     def list(GrailsParameterMap params){
         params.max = params.max ?: GlobalConfig.itemsPerPage()
-         memberList = Member.createCriteria().list(params){
+        List<Member> memberList = Member.createCriteria().list(params){
             if(params?.colName && params?.colValue){
                 like(params.colName, "%" + params.colValue + "%")
             }
@@ -45,8 +46,9 @@ class MemberService {
                 order("id", "desc")
             }
 
-            return [list: memberList, count: memberList.size()]
         }
+
+        return [list: memberList, count: memberList.size()]
     }
 
     def delete(Member member){
